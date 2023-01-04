@@ -14,7 +14,12 @@ db = mysql.connector.connect(
 
 cursor = db.cursor()
 
-# sql = "CREATE TABLE rating(id VARCHAR(255) PRIMARY KEY,total_votes INT,mean_vote DECIMAL(2,1))"
-# cursor.execute(sql)
+def create_table_from_csv(file_name, table_name, table_columns):
+    query = f"CREATE TABLE {table_name} {table_columns}"
+    cursor.execute(query)
 
-x = 1
+    df = pd.read_csv(f"./data/{table_name}.csv")
+
+
+
+create_table_from_csv("games.csv", "games", "test()")

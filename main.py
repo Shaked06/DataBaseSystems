@@ -1,5 +1,6 @@
 import requests
 import pandas as pd
+import os
 
 API_TOKEN = "Bearer n6ltTo7OHNOdFrWhoNnGVM25QQRg3GTwyC7UnBTErHL6oFaIhlaD4OqbW42KMOai"
 BASE_URL = "https://api.collegefootballdata.com"
@@ -20,7 +21,7 @@ def get_teams():
         tmp_df = pd.DataFrame([row], columns=columns)
         df = pd.concat([df, tmp_df], axis=0, ignore_index=True)
 
-    df.to_csv('teams.csv', index=False)
+    df.to_csv('data/teams.csv', index=False)
 
 
 def get_games():
@@ -36,7 +37,7 @@ def get_games():
             tmp_df = pd.DataFrame([row], columns=columns)
             df = pd.concat([df, tmp_df], axis=0, ignore_index=True)
         print(f"DONE - {season}")
-    df.to_csv('games.csv', index=False)
+    df.to_csv('data/games.csv', index=False)
 
 
 def get_coaches():
@@ -56,25 +57,60 @@ def get_coaches():
             tmp_df = pd.DataFrame([metadata_values + per_season_values], columns=columns)
             df = pd.concat([df, tmp_df], axis=0, ignore_index=True)
             print(tmp_df)
-    df.to_csv('coaches.csv', index=False)
+    df.to_csv('data/coaches.csv', index=False)
 
 
 def get_stats():
-    columns = ['team', 'stat_name', 'stat_value', 'season']
-    df = pd.DataFrame(columns=columns)
+    df_columns = ['team', 'stat_name', 'stat_value', 'season']
+    api_columns = ['team', 'statName', 'statValue', 'season']
+    df = pd.DataFrame(columns=df_columns)
 
     for season in SEASONS:
         url = BASE_URL + f"/stats/season?year={season}"
         response = requests.request("GET", url, headers=HEADERS).json()
-        for game in response:
-            row = list(map(game.get, columns))
-            tmp_df = pd.DataFrame([row], columns=columns)
+        for row in response:
+            row = list(map(row.get, api_columns))
+            tmp_df = pd.DataFrame([row], columns=df_columns)
             df = pd.concat([df, tmp_df], axis=0, ignore_index=True)
         print(f"DONE - {season}")
-    df.to_csv('stats.csv', index=False)
+    df.to_csv('data/stats.csv', index=False)
+
+
+def get_plays_per_season():
+    weeks = [_ for _ in range(1, 16)]  # TODO:: CHECK THAT THIS IS TRUE
+
+    columns = ['id', 'home', 'away', 'game_id', 'drive_id', 'drive_number', 'play_number',
+               'yard_line', 'yards_to_goal', 'scoring', 'play_type']
+
+    for season in SEASONS:
+        df = pd.DataFrame(columns=columns)
+        df['scoring'] = df['scoring'].astype('boolean')
+        for week in weeks:
+            url = BASE_URL + f"/plays?year={season}&week={week}"
+            responses = requests.request("GET", url, headers=HEADERS).json()
+            for response in responses:
+                row = list(map(response.get, columns))
+                tmp_df = pd.DataFrame([row], columns=columns)
+                tmp_df['scoring'] = tmp_df['scoring'].astype('boolean')
+                df = pd.concat([df, tmp_df], axis=0, ignore_index=True)
+        df.to_csv(f'data/plays_per_season/plays_{season}.csv', index=False)
+        print(f"DONE - {season}")
+
+
+def get_plays():
+    get_plays_per_season()
+    file_list = os.listdir("data/plays_per_season")
+    df = pd.DataFrame()
+    for file in file_list:
+        tmp_df = pd.read_csv(file)
+        df = pd.concat([df, tmp_df], ignore_index=True)
+
+    df.to_csv("data/plays.csv")
 
 
 if __name__ == '__main__':
+    # get_teams()
     # get_games()
     # get_coaches()
-    get_stats()
+    # get_stats()
+    get_plays()

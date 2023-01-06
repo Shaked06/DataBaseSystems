@@ -1,13 +1,14 @@
 import requests
 import pandas as pd
 import os
+import re
 
 API_TOKEN = "Bearer n6ltTo7OHNOdFrWhoNnGVM25QQRg3GTwyC7UnBTErHL6oFaIhlaD4OqbW42KMOai"
 BASE_URL = "https://api.collegefootballdata.com"
 HEADERS = {
     'Authorization': API_TOKEN
 }
-SEASONS = [_ for _ in range(2000, 2023)]
+SEASONS = [_ for _ in range(2020, 2023)]
 
 
 def get_teams():
@@ -37,7 +38,7 @@ def get_games():
             tmp_df = pd.DataFrame([row], columns=columns)
             df = pd.concat([df, tmp_df], axis=0, ignore_index=True)
         print(f"DONE - {season}")
-    df.to_csv('data/games.csv', index=False)
+    df.to_csv('data/games_20_22.csv', index=False)
 
 
 def get_coaches():
@@ -73,7 +74,7 @@ def get_stats():
             tmp_df = pd.DataFrame([row], columns=df_columns)
             df = pd.concat([df, tmp_df], axis=0, ignore_index=True)
         print(f"DONE - {season}")
-    df.to_csv('data/stats.csv', index=False)
+    df.to_csv('data/stats_20_22.csv', index=False)
 
 
 def get_plays_per_season():
@@ -93,19 +94,48 @@ def get_plays_per_season():
                 tmp_df = pd.DataFrame([row], columns=columns)
                 tmp_df['scoring'] = tmp_df['scoring'].astype('boolean')
                 df = pd.concat([df, tmp_df], axis=0, ignore_index=True)
+
         df.to_csv(f'data/plays_per_season/plays_{season}.csv', index=False)
         print(f"DONE - {season}")
 
 
 def get_plays():
+    base_url = "data/plays_per_season"
+    columns = ['id', 'home', 'away', 'game_id', 'drive_id', 'drive_number', 'play_number',
+               'yard_line', 'yards_to_goal', 'scoring', 'play_type']
+
     get_plays_per_season()
-    file_list = os.listdir("data/plays_per_season")
-    df = pd.DataFrame()
+
+    file_list = os.listdir(base_url)
+    df = pd.DataFrame(columns=columns)
+    df['scoring'] = df['scoring'].astype('boolean')
     for file in file_list:
-        tmp_df = pd.read_csv(file)
+        tmp_df = pd.read_csv(f'{base_url}/{file}')
+        tmp_df['scoring'] = tmp_df['scoring'].astype('boolean')
         df = pd.concat([df, tmp_df], ignore_index=True)
 
     df.to_csv("data/plays.csv")
+    print("DONE")
+
+
+def get_plays_20_22():
+    base_url = "data/plays_per_season"
+    columns = ['id', 'home', 'away', 'game_id', 'drive_id', 'drive_number', 'play_number',
+               'yard_line', 'yards_to_goal', 'scoring', 'play_type']
+
+    # get_plays_per_season()
+
+    file_list = os.listdir(base_url)
+    df = pd.DataFrame(columns=columns)
+    df['scoring'] = df['scoring'].astype('boolean')
+    for file in file_list:
+        if file in [f"plays_{season}.csv" for season in range(2020, 2023)]:
+            tmp_df = pd.read_csv(f'{base_url}/{file}')
+            tmp_df['scoring'] = tmp_df['scoring'].astype('boolean')
+            df = pd.concat([df, tmp_df], ignore_index=True)
+
+    df.to_csv("data/plays_20_22.csv")
+    print("DONE")
 
 
 if __name__ == '__main__':
@@ -113,4 +143,6 @@ if __name__ == '__main__':
     # get_games()
     # get_coaches()
     # get_stats()
-    get_plays()
+    # get_plays()
+    # get_plays_20_22()
+    pass

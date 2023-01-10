@@ -140,7 +140,7 @@ def get_plays_20_22():
 
 
 def get_venues():
-    columns = ['id', 'name', 'year', 'capacity', 'grass', 'city', 'state']
+    columns = ['id', 'name', 'capacity', 'grass', 'city', 'state']
     df = pd.DataFrame(columns=columns)
     url = BASE_URL + "/venues"
 
@@ -155,10 +155,10 @@ def get_venues():
 
 
 if __name__ == '__main__':
-    get_teams()
+    # get_teams()
     # get_games()
     # get_coaches()
     # get_stats()
     # get_plays()
     # get_plays_20_22()
-    # get_venues()
+    get_venues()

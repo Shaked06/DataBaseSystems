@@ -153,6 +153,21 @@ def get_venues():
     df.to_csv('data/venues.csv', index=False)
 
 
+def get_stats_per_play():
+    df_columns = ['playId', 'gameId', 'week', 'season', 'team', 'opponent', 'teamScore', 'opponentScore',
+                  'yardsToGoal', 'down', 'distance', 'statType', 'stat']
+    df = pd.DataFrame(columns=df_columns)
+
+    for season in SEASONS:
+        url = BASE_URL + f"/play/stats?year={season}"
+        response = requests.request("GET", url, headers=HEADERS).json()
+        for row in response:
+            tmp_df = pd.DataFrame([row], columns=df_columns)
+            df = pd.concat([df, tmp_df], axis=0, ignore_index=True)
+        print(f"DONE - {season}")
+
+    df.to_csv('data/stats_per_play.csv', index=False)
+
 
 if __name__ == '__main__':
     # get_teams()
@@ -161,4 +176,5 @@ if __name__ == '__main__':
     # get_stats()
     # get_plays()
     # get_plays_20_22()
-    get_venues()
+    # get_venues()
+    get_stats_per_play()

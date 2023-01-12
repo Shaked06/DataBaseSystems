@@ -154,8 +154,8 @@ def get_venues():
 
 
 def get_stats_per_play():
-    df_columns = ['playId', 'gameId', 'week', 'season', 'team', 'opponent', 'teamScore', 'opponentScore',
-                  'yardsToGoal', 'down', 'distance', 'statType', 'stat']
+    df_columns = ['play_id', 'game_id', 'week', 'season', 'team', 'opponent', 'team_score', 'opponent_score',
+                  'yards_to_goal', 'down', 'distance', 'stat_type', 'stat']
     df = pd.DataFrame(columns=df_columns)
 
     for season in SEASONS:
@@ -173,8 +173,5 @@ if __name__ == '__main__':
     # get_teams()
     # get_games()
     # get_coaches()
-    # get_stats()
-    # get_plays()
-    # get_plays_20_22()
     # get_venues()
     get_stats_per_play()

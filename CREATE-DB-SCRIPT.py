@@ -73,15 +73,6 @@ try:
     # query = "ALTER TABLE coaches ADD FOREIGN KEY (school) REFERENCES teams(school)"
     # cursor.execute(query)
 
-    # create_table("stats", "(team VARCHAR(255),"
-    #                       "stat_name VARCHAR(255),"
-    #                       "stat_value INT,"
-    #                       "season VARCHAR(255))")
-    # insert_values_into_table_from_csv("stats", 4)
-    # query = "ALTER TABLE stats ADD id INT PRIMARY KEY AUTO_INCREMENT"
-    # cursor.execute(query)
-    # query = "ALTER TABLE stats ADD FOREIGN KEY (team) REFERENCES teams(school)"
-    # cursor.execute(query)
 
     create_table("stats_per_play", "(play_id BIGINT,"
                                    "game_id INT REFERENCES games(id),"

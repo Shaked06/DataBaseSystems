@@ -156,12 +156,16 @@ def get_venues():
 def get_stats_per_play():
     df_columns = ['play_id', 'game_id', 'week', 'season', 'team', 'opponent', 'team_score', 'opponent_score',
                   'yards_to_goal', 'down', 'distance', 'stat_type', 'stat']
+    api_columns = ['playId', 'gameId', 'week', 'season', 'team', 'opponent', 'teamScore', 'opponentScore',
+                   'yardsToGoal', 'down', 'distance', 'statType', 'stat']
+
     df = pd.DataFrame(columns=df_columns)
 
     for season in SEASONS:
         url = BASE_URL + f"/play/stats?year={season}"
         response = requests.request("GET", url, headers=HEADERS).json()
         for row in response:
+            row = list(map(row.get, api_columns))
             tmp_df = pd.DataFrame([row], columns=df_columns)
             df = pd.concat([df, tmp_df], axis=0, ignore_index=True)
         print(f"DONE - {season}")

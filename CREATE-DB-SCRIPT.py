@@ -82,8 +82,8 @@ try:
     # query = "ALTER TABLE stats ADD FOREIGN KEY (team) REFERENCES teams(school)"
     # cursor.execute(query)
 
-    create_table("stats_per_player", "(play_id INT,"
-                                     "game_id INT,"
+    create_table("stats_per_play", "(play_id INT,"
+                                     "game_id INT REFERENCES games(id),"
                                      "week INT,"
                                      "season INT,"
                                      "team VARCHAR(255),"
@@ -95,7 +95,7 @@ try:
                                      "distance INT,"
                                      "stat_type VARCHAR(255),"
                                      "stat INT)")
-    insert_values_into_table_from_csv("stats", 4)
+    insert_values_into_table_from_csv("stats_per_play", 13)
 
 
 

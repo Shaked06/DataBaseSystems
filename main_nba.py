@@ -145,6 +145,6 @@ def get_avg_stats():
 if __name__ == '__main__':
     # get_players()
     # get_teams()
-    get_games()
-    # get_stats()
+    # get_games()
+    get_stats()
     # get_avg_stats()

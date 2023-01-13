@@ -74,24 +74,24 @@ try:
     # cursor.execute(query)
 
 
-    create_table("stats_per_play", "(play_id BIGINT,"
-                                   "game_id INT REFERENCES games(id),"
-                                   "week INT,"
-                                   "season INT,"
-                                   "team VARCHAR(255),"
-                                   "opponent VARCHAR(255),"
-                                   "team_score INT,"
-                                   "opponent_score INT,"
-                                   "yards_to_goal INT,"
-                                   "down INT,"
-                                   "distance INT,"
-                                   "stat_type VARCHAR(255),"
-                                   "stat INT)")
-    insert_values_into_table_from_csv("stats_per_play", 13)
-    query = "ALTER TABLE stats_per_play ADD id INT PRIMARY KEY AUTO_INCREMENT"
-    cursor.execute(query)
-
-
+    # create_table("stats_per_play", "(play_id BIGINT,"
+    #                                "game_id INT,"
+    #                                "week INT,"
+    #                                "season INT,"
+    #                                "team VARCHAR(255),"
+    #                                "opponent VARCHAR(255),"
+    #                                "team_score INT,"
+    #                                "opponent_score INT,"
+    #                                "yards_to_goal INT,"
+    #                                "down INT,"
+    #                                "distance INT,"
+    #                                "stat_type VARCHAR(255),"
+    #                                "stat INT,"
+    #                                "FOREIGN KEY (game_id) REFERENCES games(id))")
+    # insert_values_into_table_from_csv("stats_per_play", 13)
+    # query = "ALTER TABLE stats_per_play ADD id INT PRIMARY KEY AUTO_INCREMENT"
+    # cursor.execute(query)
+    create_index("stats_per_play", "game_id")
 
 
 except Exception as e:

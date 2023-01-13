@@ -36,62 +36,44 @@ def create_index(table_name, column_name):
 
 
 try:
-    # create_table("venues", "(id INT PRIMARY KEY,"
-    #                        "name VARCHAR(255),"
-    #                        "capacity INT,"
-    #                        "grass INT,"
-    #                        "city VARCHAR(255),"
-    #                        "state VARCHAR(255))")
-    # insert_values_into_table_from_csv("venues", 6)
-
     # create_table("teams", "(id INT PRIMARY KEY,"
-    #                       " school VARCHAR(255),"
-    #                       " mascot VARCHAR(255),"
-    #                       " abbreviation VARCHAR(255),"
-    #                       " venue_id INT,"
-    #                       "FOREIGN KEY (venue_id) REFERENCES venues(id))")
-    # insert_values_into_table_from_csv("teams", 5)
-    # create_index("teams", "school")
+    #                       "abbreviation VARCHAR(255),"
+    #                       "city VARCHAR(255),"
+    #                       "conference VARCHAR(255),"
+    #                       "full_name VARCHAR(255),"
+    #                       "name VARCHAR(255))")
+    # insert_values_into_table_from_csv("teams", 6)
+
+    # create_table("players", "(id INT PRIMARY KEY,"
+    #                         " first_name VARCHAR(255),"
+    #                         " last_name VARCHAR(255),"
+    #                         " position VARCHAR(255),"
+    #                         " team_id INT,"
+    #                         "FOREIGN KEY (team_id) REFERENCES teams(id))")
+    # insert_values_into_table_from_csv("players", 5)
+    create_index("players", "position")
 
     # create_table("games", "(id INT PRIMARY KEY,"
     #                       " season INT,"
-    #                       " home_id INT,"
-    #                       " away_id INT,"
-    #                       " FOREIGN KEY (home_id) REFERENCES teams(id),"
-    #                       " FOREIGN KEY (away_id) REFERENCES teams(id))")
-    # insert_values_into_table_from_csv("games", 4)
+    #                       " status VARCHAR(255),"
+    #                       " home_team_id INT,"
+    #                       " home_team_score INT,"
+    #                       " visitor_team_id INT,"
+    #                       " visitor_team_score INT,"
+    #                       " FOREIGN KEY (home_team_id) REFERENCES teams(id),"
+    #                       " FOREIGN KEY (visitor_team_id) REFERENCES teams(id))")
+    # insert_values_into_table_from_csv("games", 7)
+    create_index("games", "home_team_id")
+    create_index("games", "visitor_team_id")
 
-    # create_table("coaches", "(first_name VARCHAR(255),"
+    # create_table("stats", "(first_name VARCHAR(255),"
     #                         "second_name VARCHAR(255),"
     #                         "year INT,"
     #                         "wins INT,"
     #                         "losses INT,"
     #                         "ties INT,"
     #                         "school VARCHAR(255))")
-    # insert_values_into_table_from_csv("coaches", 7)
-    # query = "ALTER TABLE coaches ADD id INT PRIMARY KEY AUTO_INCREMENT"
-    # query = "ALTER TABLE coaches ADD FOREIGN KEY (school) REFERENCES teams(school)"
-    # cursor.execute(query)
-
-
-    # create_table("stats_per_play", "(play_id BIGINT,"
-    #                                "game_id INT,"
-    #                                "week INT,"
-    #                                "season INT,"
-    #                                "team VARCHAR(255),"
-    #                                "opponent VARCHAR(255),"
-    #                                "team_score INT,"
-    #                                "opponent_score INT,"
-    #                                "yards_to_goal INT,"
-    #                                "down INT,"
-    #                                "distance INT,"
-    #                                "stat_type VARCHAR(255),"
-    #                                "stat INT,"
-    #                                "FOREIGN KEY (game_id) REFERENCES games(id))")
-    # insert_values_into_table_from_csv("stats_per_play", 13)
-    # query = "ALTER TABLE stats_per_play ADD id INT PRIMARY KEY AUTO_INCREMENT"
-    # cursor.execute(query)
-    create_index("stats_per_play", "game_id")
+    # insert_values_into_table_from_csv("stats", 7)
 
 
 except Exception as e:

@@ -54,7 +54,23 @@ ORDER BY home_visitor_difference ASC
 LIMIT 5
 """
 
+# הכי הרבה שיפור בכמות סלים בין 2011 ל2021
 query4 = """
+SELECT t1.full_name, (t1.visitor_team_score_2021 - t2.visitor_team_score_2011) AS decade_improvment
+FROM
+(SELECT g.season, t.id, SUM(g.visitor_team_score) AS visitor_team_score_2021, t.full_name 
+FROM games g
+JOIN teams t  ON t.id = g.visitor_team_id  
+WHERE g.season = 2021 
+GROUP BY g.season, t.id) AS t1
+JOIN (
+SELECT g.season, t.id, SUM(g.visitor_team_score) AS visitor_team_score_2011, t.full_name 
+FROM games g
+JOIN teams t  ON t.id = g.visitor_team_id  
+WHERE g.season = 2011 
+GROUP BY g.season, t.id
+) AS t2 ON t1.id = t2.id
+ORDER BY decade_improvment DESC 
 """
 
 

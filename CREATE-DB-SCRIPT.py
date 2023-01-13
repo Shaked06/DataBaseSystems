@@ -65,6 +65,7 @@ try:
     # insert_values_into_table_from_csv("games", 7)
     # create_index("games", "home_team_id")
     # create_index("games", "visitor_team_id")
+    # create_index("games", "season")
 
     # create_table("stats", "(ast INT,"
     #              "blk INT,"

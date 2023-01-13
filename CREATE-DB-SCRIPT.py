@@ -51,7 +51,7 @@ try:
     #                         " team_id INT,"
     #                         "FOREIGN KEY (team_id) REFERENCES teams(id))")
     # insert_values_into_table_from_csv("players", 5)
-    create_index("players", "position")
+    # create_index("players", "position")
 
     # create_table("games", "(id INT PRIMARY KEY,"
     #                       " season INT,"
@@ -63,17 +63,17 @@ try:
     #                       " FOREIGN KEY (home_team_id) REFERENCES teams(id),"
     #                       " FOREIGN KEY (visitor_team_id) REFERENCES teams(id))")
     # insert_values_into_table_from_csv("games", 7)
-    create_index("games", "home_team_id")
-    create_index("games", "visitor_team_id")
+    # create_index("games", "home_team_id")
+    # create_index("games", "visitor_team_id")
 
-    # create_table("stats", "(first_name VARCHAR(255),"
-    #                         "second_name VARCHAR(255),"
-    #                         "year INT,"
-    #                         "wins INT,"
-    #                         "losses INT,"
-    #                         "ties INT,"
-    #                         "school VARCHAR(255))")
-    # insert_values_into_table_from_csv("stats", 7)
+    create_table("stats", "(id INT PRIMARY KEY,"
+                          "ast INT,"
+                          "blk INT,"
+                          "dreb INT,"
+                          "game_id INT,"
+                          "game_id INT,"
+                 )
+    insert_values_into_table_from_csv("stats", 7)
 
 
 except Exception as e:

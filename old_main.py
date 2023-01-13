@@ -2,7 +2,7 @@ import requests
 import pandas as pd
 import os
 
-API_TOKEN = "Bearer n6ltTo7OHNOdFrWhoNnGVM25QQRg3GTwyC7UnBTErHL6oFaIhlaD4OqbW42KMOai"
+
 BASE_URL = "https://api.collegefootballdata.com"
 HEADERS = {
     'Authorization': API_TOKEN

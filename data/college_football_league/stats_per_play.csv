@@ -1,5 +1,5 @@
 play_id,game_id,week,season,team,opponent,team_score,opponent_score,yards_to_goal,down,distance,stat_type,stat
-401212478102964404,401212478,7,2020,South Florida,Temple,14,17,62,3,11,Interception,1
+    401212478102964404,401212478,7,2020,South Florida,Temple,14,17,62,3,11,Interception,1
 401237034103946502,401237034,4,2020,Kentucky,Auburn,7,15,73,2,10,Rush,9
 401237034103946503,401237034,4,2020,Kentucky,Auburn,7,15,64,3,1,Rush,3
 401237034103946510,401237034,4,2020,Kentucky,Auburn,7,15,11,2,7,Rush,3

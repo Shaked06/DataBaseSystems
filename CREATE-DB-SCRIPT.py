@@ -66,14 +66,22 @@ try:
     # create_index("games", "home_team_id")
     # create_index("games", "visitor_team_id")
 
-    create_table("stats", "(id INT PRIMARY KEY,"
-                          "ast INT,"
-                          "blk INT,"
-                          "dreb INT,"
-                          "game_id INT,"
-                          "game_id INT,"
-                 )
-    insert_values_into_table_from_csv("stats", 7)
+    # create_table("stats", "(ast INT,"
+    #              "blk INT,"
+    #              "dreb INT,"
+    #              "game_id INT,"
+    #              "player_id INT,"
+    #              "pts INT,"
+    #              "reb INT,"
+    #              "stl INT,"
+    #              "team_id INT,"
+    #              "turnover INT,"
+    #              "FOREIGN KEY (game_id) REFERENCES games(id),"
+    #              "FOREIGN KEY (player_id) REFERENCES players(id),"
+    #              "FOREIGN KEY (team_id) REFERENCES teams(id))")
+    # insert_values_into_table_from_csv("stats", 10)
+    # query = "ALTER TABLE stats ADD id INT PRIMARY KEY AUTO_INCREMENT"
+    # cursor.execute(query)
 
 
 except Exception as e:

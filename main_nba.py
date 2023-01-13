@@ -77,29 +77,22 @@ def get_games():
 
 
 def get_stats():
-    df_columns = ['id', 'ast', 'blk', 'dreb', 'fg3_pct', 'fg3a',
-                  'fg3m', 'fg_pct', 'fga', 'fgm', 'ft_pct', 'fta',
-                  'ftm', 'game_id', 'oreb', 'pf',
+    df_columns = ['id', 'ast', 'blk', 'dreb', 'game_id',
                   'player_id', 'pts', 'reb', 'stl', 'team_id', 'turnover']
-
     df = pd.DataFrame(columns=df_columns)
 
-    pages = range(1, 528)
+    pages = range(1, 212)
     url = BASE_URL + "/stats"
 
     for page in pages:
-        params = {'per_page': PER_PAGE, 'page': page, 'seasons[]': [2020, 2022]}
+        params = {'per_page': PER_PAGE, 'page': page, 'seasons[]': 2022}
         response = requests.get(url=url, params=params).json()['data']
         for r in response:
             if (r['game'] is None) or (r['player'] is None) or (r['team'] is None):
                 continue
-            tmp_columns = ['id', 'ast', 'blk', 'dreb', 'fg3_pct', 'fg3a',
-                           'fg3m', 'fg_pct', 'fga', 'fgm', 'ft_pct', 'fta',
-                           'ftm', ]
+            tmp_columns = ['id', 'ast', 'blk', 'dreb']
             data = list(map(r.get, tmp_columns))
             data.append(r['game']['id'])
-            data.append(r['oreb'])
-            data.append(r['pf'])
             data.append(r['player']['id'])
             data.append(r['pts'])
             data.append(r['reb'])
@@ -122,32 +115,28 @@ def get_avg_stats():
                   'fgm', 'fg3m', 'fg3a', 'ftm', 'fta', 'oreb', 'dreb',
                   'reb', 'ast', 'stl', 'blk', 'turnover', 'pf', 'pts',
                   'fg_pct', 'fg3_pct', 'ft_pct']
-
     df = pd.DataFrame(columns=df_columns)
 
     url = BASE_URL + "/season_averages"
     players = pd.read_csv('data/players.csv')
-    players_id = players['id'].values.tolist()
-    seasons = range(2020, 2022)
+    players_id = players['id'].values.tolist()[:100]
 
-    for season in seasons:
-        page = 1
-        params = {'per_page': PER_PAGE, 'page': 1, 'season': season, 'player_ids[]': players_id}
+    params = {'per_page': PER_PAGE, 'page': page, 'season': 2022, 'player_ids[]': [1,2]}
+    response = requests.get(url=url, params=params).json()['data']
+    while True:
+        response = requests.get(url=url, params=params).json()['data']
+        if not response:
+            break
+        for r in response:
+            data = list(map(r.get, df_columns))
+            tmp_df = pd.DataFrame([data], columns=df_columns)
+            df = pd.concat([df, tmp_df], axis=0, ignore_index=True)
 
-        while True:
-            response = requests.get(url=url, params=params).json()['data']
-            if not response:
-                break
-            for r in response:
-                data = list(map(r.get, df_columns))
-                tmp_df = pd.DataFrame([data], columns=df_columns)
-                df = pd.concat([df, tmp_df], axis=0, ignore_index=True)
+        page += 1
+        params = {'per_page': PER_PAGE, 'page': page, 'seasons[]': season, 'player_ids[]': players_id}
 
-            page += 1
-            params = {'per_page': PER_PAGE, 'page': page, 'seasons[]': season, 'player_ids[]': players_id}
-
-            if page % 50 == 1:
-                print(f"DONE - PAGE {page}")
+        if page % 50 == 1:
+            print(f"DONE - PAGE {page}")
 
     df.to_csv('data/season_avg_stats.csv', index=False)
     print("DONE")
@@ -156,6 +145,6 @@ def get_avg_stats():
 if __name__ == '__main__':
     # get_players()
     # get_teams()
-    # get_games()
+    get_games()
     # get_stats()
-    get_avg_stats()
+    # get_avg_stats()

@@ -127,14 +127,17 @@ def get_avg_stats():
 
     url = BASE_URL + "/season_averages"
     players = pd.read_csv('data/players.csv')
-    players_id = players['id']
+    players_id = players['id'].values.tolist()
     seasons = range(2020, 2022)
 
     for season in seasons:
         page = 1
-        params = {'per_page': PER_PAGE, 'page': page, 'seasons[]': season, 'player_ids[]': players_id}
-        while requests.get(url=url, params=params).json()['data']:
+        params = {'per_page': PER_PAGE, 'page': 1, 'season': season, 'player_ids[]': players_id}
+
+        while True:
             response = requests.get(url=url, params=params).json()['data']
+            if not response:
+                break
             for r in response:
                 data = list(map(r.get, df_columns))
                 tmp_df = pd.DataFrame([data], columns=df_columns)
@@ -146,13 +149,13 @@ def get_avg_stats():
             if page % 50 == 1:
                 print(f"DONE - PAGE {page}")
 
-    df.to_csv('data/seasons_avg_stats.csv', index=False)
+    df.to_csv('data/season_avg_stats.csv', index=False)
     print("DONE")
 
 
 if __name__ == '__main__':
     # get_players()
     # get_teams()
-    get_games()
+    # get_games()
     # get_stats()
-    # get_avg_stats()
+    get_avg_stats()

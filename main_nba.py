@@ -2,7 +2,6 @@ import requests
 import pandas as pd
 
 BASE_URL = "https://www.balldontlie.io/api/v1"
-
 PER_PAGE = 100
 
 
@@ -10,11 +9,10 @@ def get_players():
     df_columns = ['id', 'first_name', 'last_name', 'position', 'team_id']
     df = pd.DataFrame(columns=df_columns)
 
-    pages = range(1, 40)
     url = BASE_URL + "/players"
-
-    for page in pages:
-        params = {'per_page': PER_PAGE, 'page': page}
+    next_page = 1
+    while True:
+        params = {'per_page': PER_PAGE, 'page': next_page}
         response = requests.get(url=url, params=params).json()['data']
         for r in response:
             tmp_columns = ['id', 'first_name', 'last_name', 'position']
@@ -23,7 +21,10 @@ def get_players():
             tmp_df = pd.DataFrame([data], columns=df_columns)
             df = pd.concat([df, tmp_df], axis=0, ignore_index=True)
 
-        print(f"DONE - PAGE {page}")
+        next_page = response['meta']['next_page']
+        if next_page is None:
+            break
+        print(f"DONE - PAGE {next_page}")
 
     df.to_csv('data/players.csv', index=False)
     print("DONE")
@@ -53,11 +54,11 @@ def get_games():
 
     df = pd.DataFrame(columns=df_columns)
 
-    pages = range(1, 526)
+    next_page = 1
     url = BASE_URL + "/games"
 
-    for page in pages:
-        params = {'per_page': PER_PAGE, 'page': page}
+    while True:
+        params = {'per_page': PER_PAGE, 'page': next_page}
         response = requests.get(url=url, params=params).json()['data']
         for r in response:
             tmp_columns = ['id', 'season', 'status']
@@ -69,43 +70,47 @@ def get_games():
 
             tmp_df = pd.DataFrame([data], columns=df_columns)
             df = pd.concat([df, tmp_df], axis=0, ignore_index=True)
-        if page % 100 == 1:
-            print(f"DONE - PAGE {page}")
+
+        next_page = response['meta']['next_page']
+        if next_page is None:
+            break
+        if next_page % 100 == 1:
+            print(f"DONE - PAGE {next_page}")
 
     df.to_csv('data/games.csv', index=False)
     print("DONE")
 
 
 def get_stats():
-    df_columns = ['id', 'ast', 'blk', 'dreb', 'game_id',
-                  'player_id', 'pts', 'reb', 'stl', 'team_id', 'turnover']
+    df_columns = ['id', 'ast', 'blk', 'dreb', 'game_id', 'player_id', 'pts', 'reb', 'stl', 'team_id', 'turnover']
     df = pd.DataFrame(columns=df_columns)
 
-    pages = range(1, 212)
-    url = BASE_URL + "/stats"
-
-    for page in pages:
-        params = {'per_page': PER_PAGE, 'page': page, 'seasons[]': 2022}
-        response = requests.get(url=url, params=params).json()['data']
-        for r in response:
-            if (r['game'] is None) or (r['player'] is None) or (r['team'] is None):
-                continue
+    url = BASE_URL + '/stats'
+    next_page = 1
+    payload = {}
+    while True:
+        params = {'page': next_page, 'per_page': PER_PAGE, 'seasons[]': [2022], 'postseason': False}
+        response = requests.get(url=url, params=params).json()
+        data = response['data']
+        for r in data:
             tmp_columns = ['id', 'ast', 'blk', 'dreb']
-            data = list(map(r.get, tmp_columns))
-            data.append(r['game']['id'])
-            data.append(r['player']['id'])
-            data.append(r['pts'])
-            data.append(r['reb'])
-            data.append(r['stl'])
-            data.append(r['team']['id'])
-            data.append(r['turnover'])
+            values = list(map(r.get, tmp_columns))
+            values.append(r['game']['id'])
+            values.append(r['player']['id'])
+            values.append(r['pts'])
+            values.append(r['reb'])
+            values.append(r['stl'])
+            values.append(r['team']['id'])
+            values.append(r['turnover'])
 
-            tmp_df = pd.DataFrame([data], columns=df_columns)
+            tmp_df = pd.DataFrame([values], columns=df_columns)
             df = pd.concat([df, tmp_df], axis=0, ignore_index=True)
+        next_page = response['meta']['next_page']
+        print(f"DONE - PAGE {next_page}")
+        if next_page is None:
+            break
 
-        if page % 50 == 1:
-            print(f"DONE - PAGE {page}")
-
+    df.drop_duplicates(inplace=True)
     df.to_csv('data/stats.csv', index=False)
     print("DONE")
 
@@ -119,24 +124,24 @@ def get_avg_stats():
 
     url = BASE_URL + "/season_averages"
     players = pd.read_csv('data/players.csv')
-    players_id = players['id'].values.tolist()[:100]
+    players_id = players['id'].values.tolist()[:4]
+    next_page = 1
 
-    params = {'per_page': PER_PAGE, 'page': page, 'season': 2022, 'player_ids[]': [1,2]}
-    response = requests.get(url=url, params=params).json()['data']
     while True:
-        response = requests.get(url=url, params=params).json()['data']
-        if not response:
-            break
-        for r in response:
+        params = {'page': next_page, 'per_page': PER_PAGE, 'season': 2021, 'player_ids[]': players_id}
+        response = requests.get(url=url, params=params).json()
+        data = response['data']
+        print(response)
+        for r in data:
             data = list(map(r.get, df_columns))
             tmp_df = pd.DataFrame([data], columns=df_columns)
             df = pd.concat([df, tmp_df], axis=0, ignore_index=True)
-
-        page += 1
-        params = {'per_page': PER_PAGE, 'page': page, 'seasons[]': season, 'player_ids[]': players_id}
-
-        if page % 50 == 1:
-            print(f"DONE - PAGE {page}")
+        if 'meta' not in response.keys():
+            print(response)
+        next_page = response['meta']['next_page']
+        print(f"DONE - PAGE {next_page}")
+        if next_page is None:
+            break
 
     df.to_csv('data/season_avg_stats.csv', index=False)
     print("DONE")
@@ -146,5 +151,5 @@ if __name__ == '__main__':
     # get_players()
     # get_teams()
     # get_games()
-    get_stats()
-    # get_avg_stats()
+    # get_stats()
+    get_avg_stats()

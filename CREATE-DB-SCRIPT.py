@@ -84,6 +84,17 @@ try:
     # query = "ALTER TABLE stats ADD id INT PRIMARY KEY AUTO_INCREMENT"
     # cursor.execute(query)
 
+    create_table("arenas", "(id INT PRIMARY KEY,"
+                           "team_id INT,"
+                           "city VARCHAR(255),"
+                           "arena VARCHAR(255),"
+                           "capacity VARCHAR(255),"
+                           "coordinates VARCHAR(255),"
+                           "year_of_construction INT, "
+                           "FOREIGN KEY (team_id) REFERENCES teams(id))"
+                 )
+    insert_values_into_table_from_csv("arenas", 7)
+
 
 except Exception as e:
     print("Failed to create table due to error: " + str(e))

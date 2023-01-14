@@ -1,0 +1,31 @@
+﻿id,team_id,city,arena,capacity,coordinates,year_of_construction
+1,1,"Atlanta,ÊGeorgia",Philips Arena,"18,118",33.757222¡N 84.396389¡W,1999
+2,2,"Boston,ÊMassachusetts",TD Garden,"18,624",42.366303¡N 71.062228¡W,1995
+3,3,"New York City,ÊNew York",Barclays Center,"17,732",40.68265¡N 73.974689¡W,2012
+4,4,"Charlotte,ÊNorth Carolina",Spectrum Center,"19,077",35.225¡N 80.839167¡W,2005
+5,5,"Chicago,ÊIllinois",United Center,"20,917",41.880556¡N 87.674167¡W,1994
+6,6,"Cleveland,ÊOhio",Quicken Loans Arena,"20,562",41.496389¡N 81.688056¡W,1994
+7,7,"Dallas,ÊTexas",American Airlines Center,"19,200",32.790556¡N 96.810278¡W,2001
+8,8,"Denver,ÊColorado",Pepsi Center,"19,155",39.748611¡N 105.0075¡W,1999
+9,9,"Detroit,ÊMichigan",Little Caesars Arena,"20,491",42.696944¡N 83.245556¡W,2017
+10,10,"Oakland,ÊCalifornia",Oracle Arena,"19,596",37.750278¡N 122.203056¡W,1966
+11,11,"Houston,ÊTexas",Toyota Center,"18,055",29.750833¡N 95.362222¡W,2003
+12,12,"Indianapolis,ÊIndiana",Bankers Life Fieldhouse,"17,923",39.763889¡N 86.155556¡W,1999
+13,13,"Los Angeles,ÊCalifornia",Staples Center,"19,060",34.043056¡N 118.267222¡W,1999
+14,14,"Los Angeles,ÊCalifornia",Staples Center,"18,997",34.043056¡N 118.267222¡W,1999
+15,15,"Memphis,ÊTennessee",FedExForum,"18,119",35.138333¡N 90.050556¡W,2004
+16,16,"Miami,ÊFlorida",American Airlines Arena,"19,600",25.781389¡N 80.188056¡W,1999
+17,17,"Milwaukee,ÊWisconsin",Bradley Center,"17,500",43.043611¡N 87.916944¡W,1988
+18,18,"Minneapolis,ÊMinnesota",Target Center,"19,356",44.979444¡N 93.276111¡W,1990
+19,19,"New Orleans,ÊLouisiana",Smoothie King Center,"16,867",29.948889¡N 90.081944¡W,1999
+20,20,"New York City,ÊNew York",Madison Square Garden,"19,812",40.750556¡N 73.993611¡W,1968
+21,21,"Oklahoma City,ÊOklahoma",Chesapeake Energy Arena,"18,203",35.463333¡N 97.515¡W,2002
+22,22,"Orlando,ÊFlorida",Amway Center,"18,846",28.539167¡N 81.383611¡W,2010
+23,23,"Philadelphia,ÊPennsylvania",Wells Fargo Center,"20,328",39.901111¡N 75.171944¡W,1996
+24,24,"Phoenix,ÊArizona",Talking Stick Resort Arena,"18,422",33.445833¡N 112.071389¡W,1992
+25,25,"Portland,ÊOregon",Moda Center,"19,441",45.531667¡N 122.666667¡W,1995
+26,26,"Sacramento,ÊCalifornia",Golden 1 Center,"17,608",38.649167¡N 121.518056¡W,2016
+27,27,"San Antonio,ÊTexas",AT&T Center,"18,418",29.426944¡N 98.4375¡W,2002
+28,28,"Toronto,ÊOntario",Scotiabank Arena,"19,800",43.643333¡N 79.379167¡W,1999
+29,29,"Salt Lake City,ÊUtah",Vivint Smart Home Arena,"18,303",40.768333¡N 111.901111¡W,1991
+30,30,"Washington, D.C.",Capital One Arena,"20,356",38.898056¡N 77.020833¡W,1997

@@ -138,17 +138,22 @@ def create_arenas_table():
 
 
 if __name__ == '__main__':
+    pass
     # CREATE TABLES AND INSERT DATA WE COLLECTED USING API
+    # print("CREATE TABLES")
     # create_teams_table()
     # create_players_table()
     # create_games_table()
-    create_stats_table()
+    # create_stats_table()
     # create_arenas_table()
+    # print("DONE TABLES")
 
     # INDEXES
+    # print("CREATE INDEXES")
     # players table
     # create_index("players", "position")
-    # # # games table
+    # games table
     # create_index("games", "home_team_id")
     # create_index("games", "visitor_team_id")
     # create_index("games", "season")
+    # print("DONE INDEXES")

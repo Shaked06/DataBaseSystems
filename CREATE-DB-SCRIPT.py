@@ -1,18 +1,20 @@
 import mysql.connector
 import pandas as pd
 
+# DB-REGISTRATION INFORMATION
 DB_NAME = "shakedcaspi"
 DB_PASSWORD = "shake65274"
 
-db = mysql.connector.connect(
+# GLOBAL CONNECTION TO THE DB
+DB = mysql.connector.connect(
     host="localhost",
     port=3305,
     user=DB_NAME,
     password=DB_PASSWORD,
     database=DB_NAME
 )
-# global initialization - cursor
-cursor = db.cursor()
+# GLOBAL INITIALIZATION - CURSOR
+cursor = DB.cursor()
 
 
 def create_table(table_name, table_columns):
@@ -157,3 +159,6 @@ if __name__ == '__main__':
     # create_index("games", "visitor_team_id")
     # create_index("games", "season")
     # print("DONE")
+
+
+    # TODO: DO WE NEED TO CLOSE THE CONNECTION ????

@@ -1,17 +1,19 @@
 import mysql.connector
 
+# DB-REGISTRATION INFORMATION
 DB_NAME = "shakedcaspi"
 DB_PASSWORD = "shake65274"
 
-db = mysql.connector.connect(
+# GLOBAL CONNECTION TO THE DB
+DB = mysql.connector.connect(
     host="localhost",
     port=3305,
     user=DB_NAME,
     password=DB_PASSWORD,
     database=DB_NAME
 )
-# global initialization - cursor
-cursor = db.cursor()
+# GLOBAL INITIALIZATION - CURSOR
+# cursor = DB.cursor()
 
 # maximus points minimum effort
 query1 = """

@@ -1,6 +1,6 @@
 import mysql.connector
 import pandas as pd
-
+# TODO: TO TOMER - LOOK INSIDE insert_values_into_table_from_csv HOW I HANDLED NaN VALUES
 # DB-REGISTRATION INFORMATION
 DB_NAME = "shakedcaspi"
 DB_PASSWORD = "shake65274"

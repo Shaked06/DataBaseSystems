@@ -146,7 +146,7 @@ if __name__ == '__main__':
     # create_games_table()
     # create_stats_table()
     # create_arenas_table()
-    # print("DONE TABLES")
+    # print("DONE")
 
     # INDEXES
     # print("CREATE INDEXES")
@@ -156,4 +156,4 @@ if __name__ == '__main__':
     # create_index("games", "home_team_id")
     # create_index("games", "visitor_team_id")
     # create_index("games", "season")
-    # print("DONE INDEXES")
+    # print("DONE")

@@ -6,7 +6,7 @@ DB_NAME = "shakedcaspi"
 DB_PASSWORD = "shake65274"
 
 # GLOBAL CONNECTION TO THE DB
-DB = mysql.connector.connect(
+db = mysql.connector.connect(
     host="localhost",
     port=3305,
     user=DB_NAME,
@@ -14,7 +14,7 @@ DB = mysql.connector.connect(
     database=DB_NAME
 )
 # GLOBAL INITIALIZATION - CURSOR
-cursor = DB.cursor()
+cursor = db.cursor()
 
 
 def create_table(table_name, table_columns):
@@ -49,7 +49,7 @@ def create_index(table_name, column_name):
     cursor.execute(query)
 
 
-# FUNCTION FOR EACH ONE OF THE TABLES
+# FUNCTION TO CREATE EACH ONE OF THE 5 TABLES
 def create_teams_table():
     try:
         create_table("teams", " (id INT PRIMARY KEY,"
@@ -160,5 +160,5 @@ if __name__ == '__main__':
     # create_index("games", "season")
     # print("DONE")
 
-
     # TODO: DO WE NEED TO CLOSE THE CONNECTION ????
+    # TODO: ADD TO DOCUMENTATION HOW WE CREATED ARENAS.CSV FILE

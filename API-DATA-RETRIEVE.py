@@ -114,39 +114,6 @@ def get_stats():
     print("DONE")
 
 
-def get_avg_stats():
-    df_columns = ['games_played', 'player_id', 'season', 'min',
-                  'fgm', 'fg3m', 'fg3a', 'ftm', 'fta', 'oreb', 'dreb',
-                  'reb', 'ast', 'stl', 'blk', 'turnover', 'pf', 'pts',
-                  'fg_pct', 'fg3_pct', 'ft_pct']
-    df = pd.DataFrame(columns=df_columns)
-
-    url = BASE_URL + "/season_averages"
-    players = pd.read_csv('data/players.csv')
-    players_id = players['id'].values.tolist()[:4]
-    next_page = 1
-
-    while True:
-        params = {'page': next_page, 'per_page': PER_PAGE, 'season': 2021, 'player_ids[]': players_id}
-        response = requests.get(url=url, params=params).json()
-        data = response['data']
-        print(response)
-        for r in data:
-            data = list(map(r.get, df_columns))
-            tmp_df = pd.DataFrame([data], columns=df_columns)
-            df = pd.concat([df, tmp_df], axis=0, ignore_index=True)
-        if 'meta' not in response.keys():
-            print(response)
-        next_page = response['meta']['next_page']
-        print(f"DONE - PAGE {next_page}")
-        if next_page is None:
-            break
-
-    df.dropna(how="any", inplace=True)
-    df.to_csv('data/season_avg_stats.csv', index=False)
-    print("DONE")
-
-
 if __name__ == '__main__':
     pass
     # get_players()

@@ -5,7 +5,7 @@ DB_NAME = "shakedcaspi"
 DB_PASSWORD = "shake65274"
 
 # GLOBAL CONNECTION TO THE DB
-DB = mysql.connector.connect(
+db = mysql.connector.connect(
     host="localhost",
     port=3305,
     user=DB_NAME,
@@ -13,7 +13,7 @@ DB = mysql.connector.connect(
     database=DB_NAME
 )
 # GLOBAL INITIALIZATION - CURSOR
-# cursor = DB.cursor()
+cursor = db.cursor()
 
 # maximus points minimum effort
 query1 = """
@@ -93,4 +93,4 @@ def get_results(query):
 
 if __name__ == "__main__":
     a = get_results(query1)
-    x = 1
+

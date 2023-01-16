@@ -1,3 +1,4 @@
+import numpy as np
 import requests
 import pandas as pd
 
@@ -13,18 +14,19 @@ def get_players():
     next_page = 1
     while True:
         params = {'per_page': PER_PAGE, 'page': next_page}
-        response = requests.get(url=url, params=params).json()['data']
-        for r in response:
+        response = requests.get(url=url, params=params).json()
+        data = response['data']
+        for r in data:
             tmp_columns = ['id', 'first_name', 'last_name', 'position']
-            data = list(map(r.get, tmp_columns))
-            data.append(r['team']['id'])
-            tmp_df = pd.DataFrame([data], columns=df_columns)
+            values = list(map(r.get, tmp_columns))
+            values.append(r['team']['id'])
+            tmp_df = pd.DataFrame([values], columns=df_columns)
             df = pd.concat([df, tmp_df], axis=0, ignore_index=True)
 
         next_page = response['meta']['next_page']
         if next_page is None:
             break
-        print(f"DONE - PAGE {next_page}")
+        print(f"DONE - PAGE {next_page-1}")
 
     df.to_csv('data/players.csv', index=False)
     print("DONE")
@@ -82,18 +84,17 @@ def get_games():
 
 
 def get_stats():
-    df_columns = ['id', 'ast', 'blk', 'dreb', 'game_id', 'player_id', 'pts', 'reb', 'stl', 'team_id', 'turnover']
+    df_columns = ['ast', 'blk', 'dreb', 'game_id', 'player_id', 'pts', 'reb', 'stl', 'team_id', 'turnover']
     df = pd.DataFrame(columns=df_columns)
 
     url = BASE_URL + '/stats'
     next_page = 1
-    payload = {}
     while True:
         params = {'page': next_page, 'per_page': PER_PAGE, 'seasons[]': [2022], 'postseason': False}
         response = requests.get(url=url, params=params).json()
         data = response['data']
         for r in data:
-            tmp_columns = ['id', 'ast', 'blk', 'dreb']
+            tmp_columns = ['ast', 'blk', 'dreb']
             values = list(map(r.get, tmp_columns))
             values.append(r['game']['id'])
             values.append(r['player']['id'])
@@ -110,7 +111,6 @@ def get_stats():
         if next_page is None:
             break
 
-    df.drop_duplicates(inplace=True)
     df.to_csv('data/stats.csv', index=False)
     print("DONE")
 
@@ -143,13 +143,14 @@ def get_avg_stats():
         if next_page is None:
             break
 
+    df.dropna(how="any", inplace=True)
     df.to_csv('data/season_avg_stats.csv', index=False)
     print("DONE")
 
 
 if __name__ == '__main__':
-    # get_players()
+    get_players()
     # get_teams()
     # get_games()
     # get_stats()
-    get_avg_stats()
+    # get_avg_stats()

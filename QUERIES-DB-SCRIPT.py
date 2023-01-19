@@ -123,11 +123,15 @@ WHERE MATCH (p.first_name, p.last_name)
 AGAINST('{player_name}')"""
 
 
+def query7():
+    return """SELECT * FROM arenas"""
+
+
 def get_results(query):
     cursor.execute(query)
     return cursor.fetchall()
 
 
 if __name__ == "__main__":
-    a = get_results(query6("lebron"))
+    a = get_results(query7())
     x = 1

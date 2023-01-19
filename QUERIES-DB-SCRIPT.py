@@ -15,8 +15,10 @@ db = mysql.connector.connect(
 # GLOBAL INITIALIZATION - CURSOR
 cursor = db.cursor()
 
+
 # maximus points minimum effort
-query1 = """
+def query1():
+    return """
     SELECT p2.first_name, p2.last_name, t.pts_dreb_difference
     FROM(
         SELECT p.id, AVG((s.pts - s.dreb)) AS pts_dreb_difference  
@@ -28,8 +30,10 @@ query1 = """
     LIMIT 20
     """
 
+
 # top overall offence and defense scores
-query2 = """
+def query2():
+    return """
     SELECT p2.first_name, p2.last_name, te.full_name, t.overall_offense_score, t.overall_defense_score
     FROM (
             SELECT p.id, SUM(s.pts + s.ast + s.dreb) AS overall_offense_score, SUM(s.reb + s.stl + s.blk) AS overall_defense_score
@@ -43,8 +47,10 @@ query2 = """
     ORDER BY overall_offense_score DESC, overall_defense_score DESC
     """
 
+
 # top 5 teams with avg home score - avg away score
-query3 = """
+def query3():
+    return """
     SELECT t.full_name, ABS(t1.home_team_avg_score - t2.visitor_team_avg_score) AS home_visitor_difference
     FROM (
         SELECT AVG(g.home_team_score) AS home_team_avg_score, g.home_team_id 
@@ -63,9 +69,10 @@ query3 = """
     LIMIT 5
     """
 
-# הכי הרבה שיפור בכמות סלים בין 2011 ל2021
+
 # the team with the biggest improvement in terms of differences between score as a visitor team vs score as home team
-query4 = """
+def query4():
+    return """
     SELECT t1.full_name, (t1.visitor_team_score_2021 - t2.visitor_team_score_2011) AS decade_improvment
     FROM (
             SELECT g.season, t.id, SUM(g.visitor_team_score) AS visitor_team_score_2021, t.full_name 
@@ -86,11 +93,41 @@ query4 = """
     """
 
 
+# maximum dribbles minimum turnovers
+def query5():
+    return """
+SELECT SUM(s.dreb - s.turnover) AS dreb_turnover_score, p.first_name, p.last_name, t.full_name AS team_name 
+FROM stats s 
+JOIN players p ON p.id = s.player_id 
+JOIN teams t ON t.id = s.team_id 
+GROUP BY s.player_id, t.id
+ORDER BY dreb_turnover_score DESC
+"""
+
+
+# get player scoring points by desired player name
+def query6(player_name):
+    if not player_name.isalpha():
+        print("player name is invalid")
+        return
+    return f"""SELECT average_points, t.full_name AS current_team_name, p.first_name, p.last_name 
+FROM players p 
+JOIN teams t ON p.team_id = t.id
+JOIN (
+	SELECT AVG(s2.pts) AS average_points, s2.player_id  
+	FROM games g
+	JOIN stats s2 ON s2.game_id = g.id
+	GROUP BY s2.player_id 
+	) AS avg_pts ON avg_pts.player_id = p.id
+WHERE MATCH (p.first_name, p.last_name)
+AGAINST('{player_name}')"""
+
+
 def get_results(query):
     cursor.execute(query)
     return cursor.fetchall()
 
 
 if __name__ == "__main__":
-    a = get_results(query1)
-
+    a = get_results(query6("lebron"))
+    x = 1

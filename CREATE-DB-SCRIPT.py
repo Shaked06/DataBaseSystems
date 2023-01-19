@@ -49,6 +49,11 @@ def create_index(table_name, column_name):
     cursor.execute(query)
 
 
+def create_full_text_index(table_name, column_name):
+    query = f"CREATE FULLTEXT INDEX FullTextIndex ON {table_name}({column_name})"
+    cursor.execute(query)
+
+
 # FUNCTION TO CREATE EACH ONE OF THE 5 TABLES
 def create_teams_table():
     try:
@@ -158,6 +163,7 @@ if __name__ == '__main__':
     # create_index("games", "home_team_id")
     # create_index("games", "visitor_team_id")
     # create_index("games", "season")
+    create_full_text_index("players", "first_name, last_name")
     # print("DONE")
 
     # TODO: DO WE NEED TO CLOSE THE CONNECTION ????

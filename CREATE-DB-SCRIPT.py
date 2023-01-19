@@ -157,8 +157,6 @@ if __name__ == '__main__':
 
     # INDEXES
     # print("CREATE INDEXES")
-    # players table
-    # create_index("players", "position")
     # games table
     # create_index("games", "home_team_id")
     # create_index("games", "visitor_team_id")

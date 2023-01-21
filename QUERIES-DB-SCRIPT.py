@@ -96,12 +96,12 @@ def query4():
 # maximum dribbles minimum turnovers
 def query5():
     return """
-SELECT SUM(s.dreb - s.turnover) AS dreb_turnover_score, p.first_name, p.last_name, t.full_name AS team_name 
-FROM stats s 
-JOIN players p ON p.id = s.player_id 
-JOIN teams t ON t.id = s.team_id 
-GROUP BY s.player_id, t.id
-ORDER BY dreb_turnover_score DESC
+        SELECT p.first_name, p.last_name, t.full_name AS team_name, SUM(s.dreb - s.turnover) AS dreb_turnover_score 
+        FROM stats s 
+        JOIN players p ON p.id = s.player_id 
+        JOIN teams t ON t.id = s.team_id 
+        GROUP BY s.player_id, t.id
+        ORDER BY dreb_turnover_score DESC
 """
 
 
@@ -110,21 +110,21 @@ def query6(player_name):
     if not player_name.isalpha():
         print("player name is invalid")
         return
-    return f"""SELECT average_points, t.full_name AS current_team_name, p.first_name, p.last_name 
-FROM players p 
-JOIN teams t ON p.team_id = t.id
-JOIN (
-	SELECT AVG(s2.pts) AS average_points, s2.player_id  
-	FROM games g
-	JOIN stats s2 ON s2.game_id = g.id
-	GROUP BY s2.player_id 
-	) AS avg_pts ON avg_pts.player_id = p.id
-WHERE MATCH (p.first_name, p.last_name)
-AGAINST('{player_name}')"""
+    return f"""SELECT t.full_name AS current_team_name, p.first_name, p.last_name, average_points 
+                FROM players p 
+                JOIN teams t ON p.team_id = t.id
+                JOIN (
+                    SELECT AVG(s2.pts) AS average_points, s2.player_id  
+                    FROM games g
+                    JOIN stats s2 ON s2.game_id = g.id
+                    GROUP BY s2.player_id 
+                    ) AS avg_pts ON avg_pts.player_id = p.id
+                WHERE MATCH (p.first_name, p.last_name)
+                AGAINST('{player_name}')"""
 
 
 def query7():
-    return """SELECT * FROM arenas"""
+    return "SELECT * FROM arenas"
 
 
 def get_results(query):
@@ -133,5 +133,25 @@ def get_results(query):
 
 
 if __name__ == "__main__":
-    a = get_results(query7())
-    x = 1
+    print("QUERY 1")
+    print(get_results(query1()))
+    print("----------------------")
+    print("QUERY 2")
+    print(get_results(query2()))
+    print("----------------------")
+    print("QUERY 3")
+    print(get_results(query3()))
+    print("----------------------")
+    print("QUERY 4")
+    print(get_results(query4()))
+    print("----------------------")
+    print("QUERY 5")
+    print(get_results(query5()))
+    print("----------------------")
+    print("QUERY 6")
+    print(get_results(query6("zach  ")))
+    print("----------------------")
+    print("QUERY 7")
+    print(get_results(query7()))
+    print("----------------------")
+    print("DONE")

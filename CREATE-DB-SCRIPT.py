@@ -1,4 +1,5 @@
 import mysql.connector
+import numpy as np
 import pandas as pd
 
 # DB-REGISTRATION INFORMATION
@@ -24,8 +25,8 @@ def create_table(table_name, table_columns):
 
 def insert_values_into_table_from_csv_with_autoincrement(table_name, number_of_columns):
     df = pd.read_csv(f"./data/{table_name}.csv")
-    df.fillna("NULL", inplace=True)
-    df.replace("", "NULL", inplace=True)
+    df.replace({np.float64('nan'): np.nan}, inplace=True)
+    df.replace({np.nan: None}, inplace=True)
     values = ("%s," * number_of_columns)[:-1]
     for index, row in df.iterrows():
         query = f"INSERT INTO {table_name} VALUES (NULL, {values})"
@@ -35,8 +36,9 @@ def insert_values_into_table_from_csv_with_autoincrement(table_name, number_of_c
 
 def insert_values_into_table_from_csv(table_name, number_of_columns):
     df = pd.read_csv(f"./data/{table_name}.csv")
-    df.fillna("NULL", inplace=True)
-    df.replace("", "NULL", inplace=True)
+    df.replace({np.float64('nan'): np.nan}, inplace=True)
+    df.replace({np.nan: None}, inplace=True)
+
     values = ("%s," * number_of_columns)[:-1]
     for index, row in df.iterrows():
         query = f"INSERT INTO {table_name} VALUES ({values})"
@@ -105,7 +107,7 @@ def create_games_table():
 
 def create_stats_table():
     try:
-        create_table("stats", "(id INT PRIMARY KEY AUTO_INCREMENT,"
+        create_table("stats", "(id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,"
                               " ast INT,"
                               " blk INT,"
                               " dreb INT,"
@@ -147,21 +149,19 @@ def create_arenas_table():
 if __name__ == '__main__':
     pass
     # CREATE TABLES AND INSERT DATA WE COLLECTED USING API
-    # print("CREATE TABLES")
+    print("CREATE TABLES")
     # create_teams_table()
     # create_players_table()
     # create_games_table()
     # create_stats_table()
     # create_arenas_table()
-    # print("DONE")
+    print("DONE")
 
     # INDEXES
-    # print("CREATE INDEXES")
+    print("CREATE INDEXES")
     # games table
     # create_index("games", "home_team_id")
     # create_index("games", "visitor_team_id")
     # create_index("games", "season")
-    create_full_text_index("players", "first_name, last_name")
-    # print("DONE")
-
-    # TODO: DO WE NEED TO CLOSE THE CONNECTION ????
+    # create_full_text_index("players", "first_name, last_name")
+    print("DONE")

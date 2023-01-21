@@ -1,3 +1,4 @@
+import numpy as np
 import requests
 import pandas as pd
 
@@ -27,6 +28,7 @@ def get_players():
             break
         print(f"DONE - PAGE {next_page-1}")
 
+    df.replace("", None, inplace=True)
     df.to_csv('data/players.csv', index=False)
     print("DONE")
 
@@ -60,21 +62,22 @@ def get_games():
 
     while True:
         params = {'per_page': PER_PAGE, 'page': next_page}
-        response = requests.get(url=url, params=params).json()['data']
-        for r in response:
+        response = requests.get(url=url, params=params).json()
+        data = response['data']
+        for r in data:
             tmp_columns = ['id', 'season', 'status']
-            data = list(map(r.get, tmp_columns))
-            data.append(r['home_team']['id'])
-            data.append(r['home_team_score'])
-            data.append(r['visitor_team']['id'])
-            data.append(r['visitor_team_score'])
+            values = list(map(r.get, tmp_columns))
+            values.append(r['home_team']['id'])
+            values.append(r['home_team_score'])
+            values.append(r['visitor_team']['id'])
+            values.append(r['visitor_team_score'])
 
-            tmp_df = pd.DataFrame([data], columns=df_columns)
+            tmp_df = pd.DataFrame([values], columns=df_columns)
             df = pd.concat([df, tmp_df], axis=0, ignore_index=True)
 
-        next_page = response['meta']['next_page']
         if next_page is None:
             break
+        next_page = response['meta']['next_page']
         if next_page % 100 == 1:
             print(f"DONE - PAGE {next_page}")
 
@@ -116,8 +119,9 @@ def get_stats():
 
 if __name__ == '__main__':
     pass
-    # get_players()
+    # print("START COLLECTING DATA ...")
+    get_players()
     # get_teams()
     # get_games()
     # get_stats()
-    # get_avg_stats()
+    # print("DONE")
